@@ -9,6 +9,7 @@ export class ReportsPage extends MainPage {
     private _endYear: Locator
     private _sortButton: Locator
     private pdfLink: Locator
+    private downloadButton: Locator
 
 
 
@@ -20,6 +21,7 @@ export class ReportsPage extends MainPage {
         this._endYear = page.locator('#t-year')
         this._sortButton = page.locator('#sidebar-filter-wrapper > div.sideFilterOperations.hidden-xs.hidden-sm > button')
         this.pdfLink = page.locator('//i[@class="mf mf-pdf"]')
+        this.downloadButton = page.locator('div > div.messageBody > ul > div > div:nth-child(4) > a')
     }
 
     fillCompanyName = async (name: string): Promise<void> => {
@@ -29,7 +31,7 @@ export class ReportsPage extends MainPage {
         await options.first().click()
     }
     checkQuarterType = async (option: number): Promise<void> => {
-        if (option > 6) {
+        if (option > 5) {
             option = 1
         }
         await this._quarterOptions.nth(option).click()
@@ -47,12 +49,9 @@ export class ReportsPage extends MainPage {
         await this.pdfLink.first().click()
     }
     downloadPDF = async (): Promise<void> => {
-        const pdfViewer = this._page.frame('#viewer');
-        let downloadButton = pdfViewer?.locator('#icon > iron-icon')
-        await downloadButton?.click()
-    }
-    getDownloadPromise = (): Promise<Download> => {
-        return this._page.waitForEvent('download')
+        await this.downloadButton.click()
+
+
     }
 
     fillEntirePage = async (name: string, option: number, startYear: string, endYear: string): Promise<void> => {

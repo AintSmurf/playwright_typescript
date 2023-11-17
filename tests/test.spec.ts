@@ -13,8 +13,9 @@ test.describe('testing stock market website', () => {
   test('download pdf after the table is sorted', async ({ page }) => {
     const reports = new ReportsPage(page)
     await reports.fillEntirePage('בנק הפועלים בע"מ', 5, '2023', '2023')
-    // const downloadPromise = reports.getDownloadPromise()
+    const downloadPromise = page.waitForEvent('download');
     await reports.downloadPDF()
-    await page.waitForTimeout(10000)
+    const download = await downloadPromise;
+    expect(await download.failure()).toBeNull()
   })
 })
