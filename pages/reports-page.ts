@@ -26,13 +26,15 @@ export class ReportsPage extends MainPage {
 
     fillCompanyName = async (name: string): Promise<void> => {
         await this._companyNameField.fill(name);
-        await this._page.waitForSelector('#level3Div > div > ul')
-        const options: Locator = this._page.locator('#level3Div > div > ul')
-        await options.first().click()
+        await this._companyNameField.press('Backspace')
+        await this._companyNameField.press('Space');
+        await this._page.waitForSelector('//*[@id="level3Div"]/div/ul/li[1]/a/div/i')
+        const options: Locator = this._page.locator('//*[@id="level3Div"]/div/ul/li[1]/a/div/i')
+        await options.click()
     }
     checkQuarterType = async (option: number): Promise<void> => {
         if (option > 5) {
-            option = 1
+            option = 5
         }
         await this._quarterOptions.nth(option).click()
     }
@@ -50,8 +52,6 @@ export class ReportsPage extends MainPage {
     }
     downloadPDF = async (): Promise<void> => {
         await this.downloadButton.click()
-
-
     }
 
     fillEntirePage = async (name: string, option: number, startYear: string, endYear: string): Promise<void> => {
